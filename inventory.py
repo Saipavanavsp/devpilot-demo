@@ -8,7 +8,16 @@ class Inventory:
         self._stock[item] = self._stock.get(item, 0) + quantity
 
     def remove(self, item: str, quantity: int) -> None:
-        self._stock[item] = self._stock.get(item, 0) - quantity
+        if quantity <= 0:
+            raise ValueError("quantity must be positive")
+        if item not in self._stock:
+            raise ValueError("item unknown")
+        if self._stock[item] < quantity:
+            raise ValueError("not enough stock")
+        
+        self._stock[item] -= quantity
+        if self._stock[item] == 0:
+            del self._stock[item]
 
     def quantity(self, item: str) -> int:
         return self._stock.get(item, 0)
